@@ -48,7 +48,19 @@ catForm.addEventListener("submit",e=>{
   if(!c||!n||!Number.isFinite(b)||b<0){alert("Invalid category or budget.");return;}
   c.name=n; c.budget=b; save(); closeCat(); render();
 });
-function toggleCat(id){db.categories.find(c=>c.id===id).active=!db.categories.find(c=>c.id===id).active;save();render()}
+function toggleCat(id){let c=db.categories.find(c=>c.id===id);if(!c)return;c.active=!c.active;save();render()}
+function deleteCat(id){
+ const c=db.categories.find(c=>c.id===id);
+ if(!c)return;
+ const hasTransactions=db.transactions.some(t=>t.categoryId===id);
+ const message=hasTransactions
+  ? `Delete category "${c.name}"? Existing transactions will remain in History.`
+  : `Delete category "${c.name}"?`;
+ if(!window.confirm(message))return;
+ if(hasTransactions)db.transactions.forEach(t=>{if(t.categoryId===id)t.categoryName=c.name});
+ db.categories=db.categories.filter(c=>c.id!==id);
+ save();render();
+}
 addCategory.onclick=()=>{let n=prompt("New category name:");if(!n?.trim())return;let b=Number(digs(prompt("Budget amount (IDR):","0")));if(!Number.isFinite(b)||b<0)return;db.categories.push({id:Date.now(),name:n.trim(),budget:b,active:true});save();render()};
 function show(name){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));document.getElementById(name).classList.add("active");document.querySelectorAll(".nav").forEach(n=>n.classList.toggle("active",n.dataset.screen===name));fab.style.display=name==="settings"?"none":"block"}
 document.querySelectorAll(".nav").forEach(n=>n.onclick=()=>show(n.dataset.screen));
