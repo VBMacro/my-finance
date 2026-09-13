@@ -22,4 +22,12 @@
 <nav><button class="nav active" data-screen="dashboard">⌂<span>Home</span></button><button class="nav" data-screen="history">☷<span>History</span></button><button class="nav" data-screen="settings">⚙<span>Settings</span></button></nav></div>
 <div id="modal" class="modal hidden"><div class="modalbox"><div class="sectionhead"><h2 id="modalTitle">Add Expense</h2><button id="closeModal">✕</button></div>
 <form id="expenseForm" class="form"><input id="txId" type="hidden"><label>Category<select id="txCategory" required></select></label><label>Amount (IDR)<input id="txAmount" inputmode="numeric" placeholder="Rp 0" required></label><label>Date<input id="txDate" type="date" required></label><label>Note<input id="txNote" maxlength="120" placeholder="Optional"></label><button class="primary" type="submit">Save</button></form></div></div>
-<script src="app.js?v=1.2.1"></script></body></html>
+<div id="catModal" class="modal hidden"><div class="modalbox">
+<div class="sectionhead"><h2>Edit Budget Category</h2><button id="closeCatModal">✕</button></div>
+<form id="catForm" class="form">
+<input id="catId" type="hidden">
+<label>Category Name<input id="catName" required maxlength="80"></label>
+<label>Monthly Budget (IDR)<input id="catBudget" inputmode="numeric" placeholder="Rp 0" required></label>
+<button class="primary" type="submit">Save Category</button>
+</form></div></div>
+<script src="app.js?v=1.2.2"></script></body></html>

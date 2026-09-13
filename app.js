@@ -23,12 +23,30 @@ function openExp(id=null){modal.classList.remove("hidden");txId.value=id||"";txC
 const close=()=>modal.classList.add("hidden");
 expenseForm.onsubmit=e=>{e.preventDefault();let id=Number(txId.value),o={categoryId:Number(txCategory.value),amount:Number(digs(txAmount.value)),date:txDate.value,note:txNote.value.trim()};if(!o.amount)return alert("Enter an amount.");if(id)Object.assign(db.transactions.find(t=>t.id===id),o);else db.transactions.push({id:Date.now(),...o});save();close();render();show("history")};
 function editTx(id){openExp(id)}function deleteTx(id){if(confirm("Delete this transaction?")){db.transactions=db.transactions.filter(t=>t.id!==id);save();render()}}
-function editCat(id){let c=db.categories.find(x=>x.id===id),n=prompt("Category name:",c.name);if(n===null)return;let b=prompt("Budget amount (IDR):",c.budget);if(b===null)return;if(!n.trim())return; b=Number(digs(b));if(!Number.isFinite(b)||b<0)return alert("Invalid budget.");c.name=n.trim();c.budget=b;save();render()}
+function editCat(id){
+  let c=db.categories.find(x=>x.id===id);
+  if(!c)return;
+  catId.value=c.id;
+  catName.value=c.name;
+  catBudget.value=inputRp(c.budget);
+  catModal.classList.remove("hidden");
+  setTimeout(()=>catName.focus(),50);
+}
+function closeCat(){catModal.classList.add("hidden")}
+catBudget.addEventListener("input",()=>catBudget.value=inputRp(catBudget.value));
+catForm.onsubmit=e=>{
+  e.preventDefault();
+  let c=db.categories.find(x=>x.id===Number(catId.value));
+  let n=catName.value.trim(), b=Number(digs(catBudget.value));
+  if(!c||!n||!Number.isFinite(b)||b<0)return alert("Invalid category or budget.");
+  c.name=n;c.budget=b;save();closeCat();render();
+};
 function toggleCat(id){db.categories.find(c=>c.id===id).active=!db.categories.find(c=>c.id===id).active;save();render()}
 addCategory.onclick=()=>{let n=prompt("New category name:");if(!n?.trim())return;let b=Number(digs(prompt("Budget amount (IDR):","0")));if(!Number.isFinite(b)||b<0)return;db.categories.push({id:Date.now(),name:n.trim(),budget:b,active:true});save();render()};
 function show(name){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));document.getElementById(name).classList.add("active");document.querySelectorAll(".nav").forEach(n=>n.classList.toggle("active",n.dataset.screen===name));fab.style.display=name==="settings"?"none":"block"}
 document.querySelectorAll(".nav").forEach(n=>n.onclick=()=>show(n.dataset.screen));
-viewAll.onclick=()=>show("allCategories");quickAdd.onclick=historyAdd.onclick=catAddExpense.onclick=fab.onclick=()=>openExp();closeModal.onclick=close;modal.onclick=e=>{if(e.target===modal)close()};periodFilter.onchange=renderHistory;categoryFilter.onchange=renderHistory;txAmount.oninput=()=>txAmount.value=inputRp(txAmount.value);
+viewAll.onclick=()=>show("allCategories");quickAdd.onclick=historyAdd.onclick=catAddExpense.onclick=fab.onclick=()=>openExp();closeModal.onclick=close;modal.onclick=e=>{if(e.target===modal)close()};
+closeCatModal.onclick=closeCat;catModal.onclick=e=>{if(e.target===catModal)closeCat()};periodFilter.onchange=renderHistory;categoryFilter.onchange=renderHistory;txAmount.oninput=()=>txAmount.value=inputRp(txAmount.value);
 editInitial.onclick=()=>{initialBalance.disabled=false;editInitial.hidden=true;saveInitial.hidden=false};saveInitial.onclick=()=>{let n=Number(initialBalance.value);if(!Number.isFinite(n)||n<0)return alert("Invalid balance.");if(confirm("Changing Initial Balance will change Current Balance. Continue?")){db.initialBalance=n;save();initialBalance.disabled=true;editInitial.hidden=false;saveInitial.hidden=true;render()}};
 exportBtn.onclick=()=>{let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(db,null,2)],{type:"application/json"}));a.download="my-finance-backup.json";a.click()};
 importBtn.onclick=()=>importFile.click();importFile.onchange=()=>{let f=importFile.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(!x.categories||!x.transactions)throw 0;if(confirm("Replace current data with this backup?")){db=x;save();render()}}catch(e){alert("Invalid backup file.")}};r.readAsText(f);importFile.value=""};

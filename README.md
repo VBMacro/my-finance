@@ -1,5 +1,9 @@
-# My Finance PWA V1.2.1
+# My Finance PWA V1.2.2
 
-Bug fix: View All Categories and Top Spending rendering. Cache version bumped to prevent stale assets.
+Category budget editing improvement:
+- Edit category opens a dedicated form.
+- Category name can be modified.
+- Per-category monthly budget can be modified directly.
+- Existing transactions, rolling balance, budget cycle 29 -> 28, history, backup/restore remain unchanged.
 
-Budget cycle: 29 -> 28. Balance carries forward and never resets.
+Balance carries forward and never resets.
