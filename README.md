@@ -1,10 +1,10 @@
-# My Finance PWA V1.2.3
+# My Finance PWA V1.2.4
 
-Settings improvements:
-- Budget cycle start/end days are editable.
-- Default remains 29 -> 28.
-- Categories can be deleted.
-- If a deleted category has transactions, transactions remain in History with a category-name snapshot.
-- Existing transactions, rolling balance, backup/restore remain intact.
+Fixes:
+- Budget Cycle Save now uses explicit DOM event handling and persists the selected start/end days.
+- Category Delete is always shown in Settings and keeps historical transactions.
+- Category budget remains directly editable.
+- Cache is versioned and navigation is network-first to prevent stale GitHub Pages UI.
 
-Budget cycle changes affect budget-cycle calculations; Current Balance never resets.
+Default budget cycle: 29 -> 28.
+Current Balance is rolling and never resets.

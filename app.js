@@ -1,4 +1,6 @@
 const KEY="myfinance_v1";
+const $=id=>document.getElementById(id);
+const balance=$("balance"),cycleLabel=$("cycle"),budgetTotal=$("budgetTotal"),spentTotal=$("spentTotal"),remainingTotal=$("remainingTotal"),overallBar=$("overallBar"),overallPct=$("overallPct"),topList=$("topList"),budgetList=$("budgetList"),categoryFilter=$("categoryFilter"),historyList=$("historyList"),historyTotal=$("historyTotal"),categoryList=$("categoryList"),initialBalance=$("initialBalance"),cycleStart=$("cycleStart"),cycleEnd=$("cycleEnd"),saveCycle=$("saveCycle"),addCategory=$("addCategory"),editInitial=$("editInitial"),saveInitial=$("saveInitial"),exportBtn=$("exportBtn"),importBtn=$("importBtn"),importFile=$("importFile"),clearBtn=$("clearBtn"),viewAll=$("viewAll"),quickAdd=$("quickAdd"),historyAdd=$("historyAdd"),catAddExpense=$("catAddExpense"),fab=$("fab"),modal=$("modal"),closeModal=$("closeModal"),modalTitle=$("modalTitle"),expenseForm=$("expenseForm"),txId=$("txId"),txCategory=$("txCategory"),txAmount=$("txAmount"),txDate=$("txDate"),txNote=$("txNote"),catModal=$("catModal"),closeCatModal=$("closeCatModal"),catForm=$("catForm"),catId=$("catId"),catName=$("catName"),catBudget=$("catBudget"),periodFilter=$("periodFilter");
 const defaults=[["Rent",1670000],["Listrik",500000],["Wifi",170000],["Makan",4800000],["Main",500000],["Kebutuhan Dapur, Cuci, Mandi",1500000],["Free Shop",1500000],["Arisan",220000],["Galon + Gas",234000],["Sampah + keamanan",200000],["Sumbangan",500000],["Bensin + Ojek",350000],["Servis",50000],["SPP",615000],["Uang Saku",200000],["Uang Sekolah Bilal",3350000],["Uang Sekolah Zaid",3195000]];
 let db=JSON.parse(localStorage.getItem(KEY)||"null")||{initialBalance:28803000,categories:defaults.map((x,i)=>({id:i+1,name:x[0],budget:x[1],active:true})),transactions:[]};
 if(!Number.isInteger(db.cycleStart)||!Number.isInteger(db.cycleEnd)){db.cycleStart=29;db.cycleEnd=28;}
@@ -39,13 +41,13 @@ function editCat(id){
 }
 function closeCat(){catModal.classList.add("hidden")}
 catBudget.addEventListener("input",()=>catBudget.value=inputRp(catBudget.value));
-catForm.onsubmit=e=>{
+catForm.addEventListener("submit",e=>{
   e.preventDefault();
-  let c=db.categories.find(x=>x.id===Number(catId.value));
-  let n=catName.value.trim(), b=Number(digs(catBudget.value));
-  if(!c||!n||!Number.isFinite(b)||b<0)return alert("Invalid category or budget.");
-  c.name=n;c.budget=b;save();closeCat();render();
-};
+  const c=db.categories.find(x=>x.id===Number(catId.value));
+  const n=catName.value.trim(), b=Number(digs(catBudget.value));
+  if(!c||!n||!Number.isFinite(b)||b<0){alert("Invalid category or budget.");return;}
+  c.name=n; c.budget=b; save(); closeCat(); render();
+});
 function toggleCat(id){db.categories.find(c=>c.id===id).active=!db.categories.find(c=>c.id===id).active;save();render()}
 addCategory.onclick=()=>{let n=prompt("New category name:");if(!n?.trim())return;let b=Number(digs(prompt("Budget amount (IDR):","0")));if(!Number.isFinite(b)||b<0)return;db.categories.push({id:Date.now(),name:n.trim(),budget:b,active:true});save();render()};
 function show(name){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));document.getElementById(name).classList.add("active");document.querySelectorAll(".nav").forEach(n=>n.classList.toggle("active",n.dataset.screen===name));fab.style.display=name==="settings"?"none":"block"}
@@ -55,6 +57,11 @@ closeCatModal.onclick=closeCat;catModal.onclick=e=>{if(e.target===catModal)close
 editInitial.onclick=()=>{initialBalance.disabled=false;editInitial.hidden=true;saveInitial.hidden=false};saveInitial.onclick=()=>{let n=Number(initialBalance.value);if(!Number.isFinite(n)||n<0)return alert("Invalid balance.");if(confirm("Changing Initial Balance will change Current Balance. Continue?")){db.initialBalance=n;save();initialBalance.disabled=true;editInitial.hidden=false;saveInitial.hidden=true;render()}};
 exportBtn.onclick=()=>{let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(db,null,2)],{type:"application/json"}));a.download="my-finance-backup.json";a.click()};
 importBtn.onclick=()=>importFile.click();importFile.onchange=()=>{let f=importFile.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(!x.categories||!x.transactions)throw 0;if(confirm("Replace current data with this backup?")){db=x;save();render()}}catch(e){alert("Invalid backup file.")}};r.readAsText(f);importFile.value=""};
-saveCycle.onclick=()=>{let s=Number(cycleStart.value),e=Number(cycleEnd.value);if(!Number.isInteger(s)||!Number.isInteger(e)||s<1||s>31||e<1||e>31)return alert("Cycle days must be between 1 and 31.");if(!confirm(`Change budget cycle to ${s} → ${e}?`))return;db.cycleStart=s;db.cycleEnd=e;save();render();alert("Budget cycle saved.")};
+saveCycle.addEventListener("click",()=>{
+  const s=parseInt(cycleStart.value,10), e=parseInt(cycleEnd.value,10);
+  if(!Number.isInteger(s)||!Number.isInteger(e)||s<1||s>31||e<1||e>31){alert("Cycle days must be between 1 and 31.");return;}
+  db.cycleStart=s; db.cycleEnd=e; save(); render();
+  alert("Budget cycle saved: "+s+" → "+e);
+});
 clearBtn.onclick=()=>{if(confirm("Clear ALL finance data? This cannot be undone.")){localStorage.removeItem(KEY);location.reload()}};
-if("serviceWorker"in navigator)navigator.serviceWorker.register("./sw.js?v=1.2.1").catch(()=>{});render();
+if("serviceWorker"in navigator)navigator.serviceWorker.register("./sw.js?v=1.2.4").catch(()=>{});render();
