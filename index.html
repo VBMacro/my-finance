@@ -1,46 +1,25 @@
-<!doctype html>
-<html lang="id">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#111827"><link rel="manifest" href="manifest.json"><link rel="stylesheet" href="style.css">
-<title>My Finance</title>
-</head>
-<body>
-<div class="app">
-<header><div><div class="eyebrow">PERSONAL FINANCE</div><h1>My Finance</h1></div><button id="installBtn" class="iconbtn" hidden>＋</button></header>
-<main>
+<!doctype html><html lang="id"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#111827"><link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="style.css?v=1.2.1"><title>My Finance</title></head><body>
+<div class="app"><header><div><div class="eyebrow">PERSONAL FINANCE</div><h1>My Finance</h1></div></header><main>
 <section id="dashboard" class="screen active">
-<div class="card balance"><div class="muted">CURRENT BALANCE</div><div id="balance" class="money big">Rp 0</div><div id="cycle" class="muted"></div></div>
-<div class="stats"><div class="card"><span class="muted">BUDGET</span><b id="budgetTotal">Rp 0</b></div><div class="card"><span class="muted">SPENT</span><b id="spentTotal">Rp 0</b></div></div>
-<div class="card highlight"><div class="row"><span>Remaining Budget</span><b id="remainingTotal">Rp 0</b></div><div class="bar"><i id="overallBar"></i></div><div id="overallPct" class="muted small">0% used</div></div>
-<div class="sectionhead"><h2>Top Spending</h2><button id="quickAdd">＋ Expense</button></div>
-<div id="topList"></div>
-<button id="viewAll" class="secondary full">View All Categories</button>
-</section>
-
-<section id="allCategories" class="screen">
-<div class="sectionhead"><h2>All Categories</h2><button id="catAddExpense">＋ Expense</button></div>
-<div id="budgetList"></div>
-</section>
-
-<section id="history" class="screen">
-<div class="sectionhead"><h2>History</h2><button id="historyAdd">＋ Expense</button></div>
+<div class="card balance"><div class="muted">CURRENT BALANCE</div><div id="balance" class="big">Rp 0</div><div id="cycle" class="muted"></div></div>
+<div class="stats"><div class="card"><span class="muted">BUDGET</span><b id="budgetTotal"></b></div><div class="card"><span class="muted">SPENT</span><b id="spentTotal"></b></div></div>
+<div class="card"><div class="row"><span>Remaining Budget</span><b id="remainingTotal"></b></div><div class="bar"><i id="overallBar"></i></div><div id="overallPct" class="muted small"></div></div>
+<div class="sectionhead"><h2>Top Spending</h2><button id="quickAdd">＋ Expense</button></div><div id="topList"></div>
+<button id="viewAll" class="secondary full">View All Categories</button></section>
+<section id="allCategories" class="screen"><div class="sectionhead"><h2>All Categories</h2><button id="catAddExpense">＋ Expense</button></div><div id="budgetList"></div></section>
+<section id="history" class="screen"><div class="sectionhead"><h2>History</h2><button id="historyAdd">＋ Expense</button></div>
 <div class="filters"><select id="periodFilter"><option value="cycle">Current Cycle</option><option value="all">All History</option></select><select id="categoryFilter"><option value="all">All Categories</option></select></div>
-<div class="card filtertotal"><span class="muted">FILTERED TOTAL</span><b id="historyTotal">Rp 0</b></div><div id="historyList"></div>
-</section>
-
-<section id="settings" class="screen">
-<h2>Settings</h2>
-<div class="card form"><label>Initial Balance<input id="initialBalance" type="number" min="0" step="1" disabled></label><button id="editInitial" class="secondary full">Edit Balance</button><button id="saveInitial" class="primary full" hidden>Save Balance</button><p id="balanceWarning" class="warning small" hidden>Changing Initial Balance changes Current Balance.</p></div>
+<div class="card filtertotal"><span class="muted">FILTERED TOTAL</span><b id="historyTotal"></b></div><div id="historyList"></div></section>
+<section id="settings" class="screen"><h2>Settings</h2>
+<div class="card form"><label>Initial Balance<input id="initialBalance" type="number" disabled></label><button id="editInitial" class="secondary full">Edit Balance</button><button id="saveInitial" class="primary full" hidden>Save Balance</button></div>
 <div class="card"><div class="sectionhead"><h2>Budget Categories</h2><button id="addCategory">＋ Add</button></div><div id="categoryList"></div></div>
 <div class="card form"><label>Budget Cycle<input value="29 → 28" disabled></label><p class="muted small">Budget resets every cycle. Current balance never resets and carries forward.</p></div>
-<div class="card"><h2>Data Management</h2><p class="muted">Keep a backup before changing phone/browser data.</p><div class="twobtn"><button id="exportBtn">Export Backup</button><button id="importBtn">Import Backup</button></div><input id="importFile" type="file" accept=".json,application/json" hidden><button id="clearBtn" class="danger full">Clear All Data</button></div>
-</section>
-</main>
-<button id="fab" class="fab">＋</button>
-<nav><button class="nav active" data-screen="dashboard">⌂<span>Home</span></button><button class="nav" data-screen="history">☷<span>History</span></button><button class="nav" data-screen="settings">⚙<span>Settings</span></button></nav>
-</div>
+<div class="card"><h2>Data Management</h2><p class="muted">Keep a backup before changing phone/browser data.</p><div class="twobtn"><button id="exportBtn">Export Backup</button><button id="importBtn">Import Backup</button></div><input id="importFile" type="file" accept=".json" hidden><button id="clearBtn" class="danger full">Clear All Data</button></div>
+</section></main><button id="fab" class="fab">＋</button>
+<nav><button class="nav active" data-screen="dashboard">⌂<span>Home</span></button><button class="nav" data-screen="history">☷<span>History</span></button><button class="nav" data-screen="settings">⚙<span>Settings</span></button></nav></div>
 <div id="modal" class="modal hidden"><div class="modalbox"><div class="sectionhead"><h2 id="modalTitle">Add Expense</h2><button id="closeModal">✕</button></div>
-<form id="expenseForm" class="form"><input id="txId" type="hidden"><label>Category<select id="txCategory" required></select></label><label>Amount (IDR)<input id="txAmount" type="text" inputmode="numeric" autocomplete="off" placeholder="Rp 0" required></label><label>Date<input id="txDate" type="date" required></label><label>Note<input id="txNote" type="text" maxlength="120" placeholder="Optional"></label><button class="primary" type="submit">Save</button></form></div></div>
-<script src="app.js"></script>
-</body></html>
+<form id="expenseForm" class="form"><input id="txId" type="hidden"><label>Category<select id="txCategory" required></select></label><label>Amount (IDR)<input id="txAmount" inputmode="numeric" placeholder="Rp 0" required></label><label>Date<input id="txDate" type="date" required></label><label>Note<input id="txNote" maxlength="120" placeholder="Optional"></label><button class="primary" type="submit">Save</button></form></div></div>
+<script src="app.js?v=1.2.1"></script></body></html>

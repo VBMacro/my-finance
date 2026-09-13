@@ -1,5 +1,5 @@
-# My Finance PWA V1.2
+# My Finance PWA V1.2.1
 
-UX-focused release. Adds compact dashboard with Top 5 spending, full category screen, floating add button, protected initial balance editing, backup/restore, and offline caching.
+Bug fix: View All Categories and Top Spending rendering. Cache version bumped to prevent stale assets.
 
 Budget cycle: 29 -> 28. Balance carries forward and never resets.
