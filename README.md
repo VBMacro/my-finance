@@ -1,9 +1,10 @@
-# My Finance PWA V1.2.2
+# My Finance PWA V1.2.3
 
-Category budget editing improvement:
-- Edit category opens a dedicated form.
-- Category name can be modified.
-- Per-category monthly budget can be modified directly.
-- Existing transactions, rolling balance, budget cycle 29 -> 28, history, backup/restore remain unchanged.
+Settings improvements:
+- Budget cycle start/end days are editable.
+- Default remains 29 -> 28.
+- Categories can be deleted.
+- If a deleted category has transactions, transactions remain in History with a category-name snapshot.
+- Existing transactions, rolling balance, backup/restore remain intact.
 
-Balance carries forward and never resets.
+Budget cycle changes affect budget-cycle calculations; Current Balance never resets.

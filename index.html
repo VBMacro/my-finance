@@ -16,7 +16,11 @@
 <section id="settings" class="screen"><h2>Settings</h2>
 <div class="card form"><label>Initial Balance<input id="initialBalance" type="number" disabled></label><button id="editInitial" class="secondary full">Edit Balance</button><button id="saveInitial" class="primary full" hidden>Save Balance</button></div>
 <div class="card"><div class="sectionhead"><h2>Budget Categories</h2><button id="addCategory">＋ Add</button></div><div id="categoryList"></div></div>
-<div class="card form"><label>Budget Cycle<input value="29 → 28" disabled></label><p class="muted small">Budget resets every cycle. Current balance never resets and carries forward.</p></div>
+<div class="card form"><h2>Budget Cycle</h2>
+<div class="cyclegrid"><label>Start Day<input id="cycleStart" type="number" min="1" max="31"></label>
+<label>End Day<input id="cycleEnd" type="number" min="1" max="31"></label></div>
+<button id="saveCycle" class="primary full">Save Budget Cycle</button>
+<p class="muted small">Example: 29 → 28. Budget resets every cycle. Current balance never resets and carries forward.</p></div>
 <div class="card"><h2>Data Management</h2><p class="muted">Keep a backup before changing phone/browser data.</p><div class="twobtn"><button id="exportBtn">Export Backup</button><button id="importBtn">Import Backup</button></div><input id="importFile" type="file" accept=".json" hidden><button id="clearBtn" class="danger full">Clear All Data</button></div>
 </section></main><button id="fab" class="fab">＋</button>
 <nav><button class="nav active" data-screen="dashboard">⌂<span>Home</span></button><button class="nav" data-screen="history">☷<span>History</span></button><button class="nav" data-screen="settings">⚙<span>Settings</span></button></nav></div>
